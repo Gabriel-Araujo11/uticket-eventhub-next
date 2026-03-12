@@ -111,10 +111,31 @@
     color: #111827;
 }
 
+.eventTitleLink {
+    color: inherit;
+    text-decoration: none;
+}
+
+.eventTitleLink:hover {
+    color: #2563eb;
+}
+
 .eventText {
     margin: 0 0 10px;
     color: #4b5563;
     line-height: 1.5;
+}
+
+.eventDetailsLink {
+    display: inline-flex;
+    margin-top: 8px;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.eventDetailsLink:hover {
+    text-decoration: underline;
 }
 
 .featuresGrid {

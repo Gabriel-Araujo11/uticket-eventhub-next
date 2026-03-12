@@ -1,7 +1,5 @@
 import Link from 'next/link'
-
 import { extractEvents, extractFirstVenue, getEvents } from '@/lib/ticketmaster'
-
 import styles from './page.module.css'
 
 export const revalidate = 3600
@@ -62,7 +60,14 @@ export default async function HomePage() {
 
               return (
                 <li key={event.id} className={styles.eventCard}>
-                  <h3 className={styles.eventTitle}>{event.name}</h3>
+                  <h3 className={styles.eventTitle}>
+                    <Link
+                      href={`/evento/${event.id}`}
+                      className={styles.eventTitleLink}
+                    >
+                      {event.name}
+                    </Link>
+                  </h3>
 
                   <p className={styles.eventText}>
                     <strong>Data:</strong>{' '}
@@ -78,6 +83,13 @@ export default async function HomePage() {
                     <strong>Cidade:</strong>{' '}
                     {venue?.city?.name ?? 'Cidade não informada'}
                   </p>
+
+                  <Link
+                    href={`/evento/${event.id}`}
+                    className={styles.eventDetailsLink}
+                  >
+                    Ver detalhes →
+                  </Link>
                 </li>
               )
             })}
