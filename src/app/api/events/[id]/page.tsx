@@ -1,9 +1,15 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { extractFirstVenue, getEventById } from '@/lib/ticketmaster'
 import { mockEventsResponse } from '@/mocks/ticketmaster.mock'
-import { EventDetailsPageProps } from '@/types/route.types'
+
+type EventDetailsPageProps = {
+    params: {
+        id: string
+    }
+}
 
 function formatEventDate(date?: string): string {
     if (!date) return 'Data não informada'
@@ -19,6 +25,34 @@ export async function generateStaticParams() {
     return events.map((event) => ({
         id: event.id,
     }))
+}
+
+export async function generateMetadata(
+    { params }: EventDetailsPageProps
+): Promise<Metadata> {
+    try {
+        const event = await getEventById(params.id)
+
+        return {
+            title: `${event.name} | EventHub`,
+            description:
+                event.info ?? `Confira os detalhes do evento ${event.name} no EventHub.`,
+            openGraph: {
+                title: event.name,
+                description:
+                    event.info ?? `Confira os detalhes do evento ${event.name} no EventHub.`,
+                type: 'website',
+            },
+            alternates: {
+                canonical: `/evento/${event.id}`,
+            },
+        }
+    } catch {
+        return {
+            title: 'Evento | EventHub',
+            description: 'Confira os detalhes deste evento no EventHub.',
+        }
+    }
 }
 
 export default async function EventDetailsPage({ params }: EventDetailsPageProps) {
