@@ -3,3 +3,9 @@ export type RouteContext = {
         id: string
     }
 }
+
+export type EventDetailsPageProps = {
+    params: {
+        id: string
+    }
+}
