@@ -6,9 +6,16 @@ import type {
     TicketmasterVenue,
     TicketmasterImage,
 } from '@/types/event.types'
-import type { GetEventsParams, RawParams, TicketmasterFetchOptions } from '@/types/ticketmaster.types'
+import type {
+    GetEventsParams,
+    RawParams,
+    TicketmasterFetchOptions,
+} from '@/types/ticketmaster.types'
 import { TICKETMASTER_BASE_URL } from '@/utils/consts'
-
+import {
+    findMockEventById,
+    mockEventsResponse,
+} from '@/mocks/ticketmaster.mock'
 
 function getApiKey(): string {
     const apiKey = process.env.TICKETMASTER_API_KEY
@@ -16,8 +23,12 @@ function getApiKey(): string {
     return apiKey
 }
 
+function shouldUseMockData(): boolean {
+    return !process.env.TICKETMASTER_API_KEY && process.env.NODE_ENV === 'development'
+}
+
 function paramHasValue(value: string | number | undefined): value is string | number {
-    return value !== undefined && value !== null && value !== ''
+    return value !== undefined && value !== ''
 }
 
 function filterValidParams(params: RawParams): Record<string, string> {
@@ -60,11 +71,78 @@ async function ticketmasterFetch<T>(
     return response.json() as Promise<T>
 }
 
+function matchesKeyword(event: TicketmasterEvent, keyword?: string): boolean {
+    if (!keyword) return true
+
+    const normalizedKeyword = keyword.trim().toLowerCase()
+    if (!normalizedKeyword) return true
+
+    return (
+        event.name.toLowerCase().includes(normalizedKeyword) ||
+        event.info?.toLowerCase().includes(normalizedKeyword) ||
+        false
+    )
+}
+
+function matchesCity(event: TicketmasterEvent, city?: string): boolean {
+    if (!city) return true
+
+    const normalizedCity = city.trim().toLowerCase()
+    if (!normalizedCity) return true
+
+    const eventCity = event._embedded?.venues?.[0]?.city?.name?.toLowerCase()
+
+    return eventCity?.includes(normalizedCity) ?? false
+}
+
+function getMockEvents(params: GetEventsParams = {}): TicketmasterEventsResponse {
+    const allEvents = mockEventsResponse._embedded?.events ?? []
+
+    const filteredEvents = allEvents.filter((event) => {
+        return matchesKeyword(event, params.keyword) && matchesCity(event, params.city)
+    })
+
+    const size = params.size ?? 12
+    const page = params.page ?? 0
+
+    const startIndex = page * size
+    const endIndex = startIndex + size
+
+    const paginatedEvents = filteredEvents.slice(startIndex, endIndex)
+
+    return {
+        _embedded: {
+            events: paginatedEvents,
+        },
+        page: {
+            size,
+            totalElements: filteredEvents.length,
+            totalPages: Math.max(1, Math.ceil(filteredEvents.length / size)),
+            number: page,
+        },
+    }
+}
+
+function getMockEventById(eventId: string): TicketmasterEvent {
+    const event = findMockEventById(eventId)
+
+    if (!event) {
+        throw new Error('Evento não encontrado nos dados mockados.')
+    }
+
+    return event
+}
+
 export async function getEvents(
     params: GetEventsParams = {},
     options?: TicketmasterFetchOptions
 ): Promise<TicketmasterEventsResponse> {
+    if (shouldUseMockData()) {
+        return getMockEvents(params)
+    }
+
     const defaultParams = { size: 12, locale: '*' }
+
     return ticketmasterFetch('/events.json', { ...defaultParams, ...params }, options)
 }
 
@@ -72,6 +150,10 @@ export async function getEventById(
     eventId: string,
     options?: TicketmasterFetchOptions
 ): Promise<TicketmasterEvent> {
+    if (shouldUseMockData()) {
+        return getMockEventById(eventId)
+    }
+
     return ticketmasterFetch(`/events/${eventId}.json`, { locale: '*' }, options)
 }
 
