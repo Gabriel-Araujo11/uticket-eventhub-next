@@ -1,5 +1,14 @@
 import Link from 'next/link'
-import { extractEvents, extractFirstVenue, getEvents } from '@/lib/ticketmaster'
+import Image from 'next/image'
+
+import FavoriteEventButton from '@/components/favorite-event-button'
+import {
+  extractEventImage,
+  extractEvents,
+  extractFirstVenue,
+  getEvents,
+} from '@/lib/ticketmaster'
+
 import styles from './page.module.css'
 
 export const revalidate = 3600
@@ -57,39 +66,56 @@ export default async function HomePage() {
           <ul className={styles.eventsGrid}>
             {events.map((event) => {
               const venue = extractFirstVenue(event)
+              const eventImage = extractEventImage(event)
 
               return (
                 <li key={event.id} className={styles.eventCard}>
-                  <h3 className={styles.eventTitle}>
-                    <Link
-                      href={`/evento/${event.id}`}
-                      className={styles.eventTitleLink}
-                    >
-                      {event.name}
-                    </Link>
-                  </h3>
+                  <div className={styles.eventImageWrapper}>
+                    <Image
+                      src={eventImage?.url ?? '/event-placeholder.svg'}
+                      alt={event.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className={styles.eventImage}
+                    />
+                  </div>
 
-                  <p className={styles.eventText}>
-                    <strong>Data:</strong>{' '}
-                    {formatEventDate(event.dates?.start?.localDate)}
-                  </p>
+                  <div className={styles.eventContent}>
+                    <h3 className={styles.eventTitle}>
+                      <Link
+                        href={`/evento/${event.id}`}
+                        className={styles.eventTitleLink}
+                      >
+                        {event.name}
+                      </Link>
+                    </h3>
 
-                  <p className={styles.eventText}>
-                    <strong>Local:</strong>{' '}
-                    {venue?.name ?? 'Local não informado'}
-                  </p>
+                    <p className={styles.eventText}>
+                      <strong>Data:</strong>{' '}
+                      {formatEventDate(event.dates?.start?.localDate)}
+                    </p>
 
-                  <p className={styles.eventText}>
-                    <strong>Cidade:</strong>{' '}
-                    {venue?.city?.name ?? 'Cidade não informada'}
-                  </p>
+                    <p className={styles.eventText}>
+                      <strong>Local:</strong>{' '}
+                      {venue?.name ?? 'Local não informado'}
+                    </p>
 
-                  <Link
-                    href={`/evento/${event.id}`}
-                    className={styles.eventDetailsLink}
-                  >
-                    Ver detalhes →
-                  </Link>
+                    <p className={styles.eventText}>
+                      <strong>Cidade:</strong>{' '}
+                      {venue?.city?.name ?? 'Cidade não informada'}
+                    </p>
+
+                    <div className={styles.eventActions}>
+                      <Link
+                        href={`/evento/${event.id}`}
+                        className={styles.eventDetailsLink}
+                      >
+                        Ver detalhes →
+                      </Link>
+
+                      <FavoriteEventButton event={event} compact />
+                    </div>
+                  </div>
                 </li>
               )
             })}

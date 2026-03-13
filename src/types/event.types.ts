@@ -115,3 +115,8 @@ export type EventDetailsPageProps = {
         id: string
     }
 }
+
+export type FavoriteEventButtonProps = {
+    event: TicketmasterEvent
+    compact?: boolean
+}

@@ -97,11 +97,26 @@
 }
 
 .eventCard {
-    padding: 20px;
+    overflow: hidden;
     border: 1px solid #e5e7eb;
     border-radius: 16px;
     background: #ffffff;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.eventImageWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #e5e7eb;
+}
+
+.eventImage {
+    object-fit: cover;
+}
+
+.eventContent {
+    padding: 20px;
 }
 
 .eventTitle {
@@ -126,9 +141,16 @@
     line-height: 1.5;
 }
 
+.eventActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+    align-items: center;
+}
+
 .eventDetailsLink {
     display: inline-flex;
-    margin-top: 8px;
     color: #2563eb;
     font-weight: 600;
     text-decoration: none;
@@ -201,5 +223,10 @@
     .eventsGrid,
     .featuresGrid {
         grid-template-columns: 1fr;
+    }
+
+    .eventActions {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }
