@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
+import FavoriteEventButton from '@/components/favorite-event-button'
 import {
     extractEventImage,
     extractEvents,
@@ -144,6 +145,10 @@ export default async function EventDetailsPage({ params }: EventDetailsPageProps
                                 {event.pleaseNote ?? 'Nenhuma observação adicional informada.'}
                             </p>
                         </section>
+
+                        <div className={styles.actions}>
+                            <FavoriteEventButton event={event} />
+                        </div>
                     </div>
                 </section>
             </main>

@@ -16,6 +16,12 @@
     text-decoration: underline;
 }
 
+.actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
 .heroCard {
     overflow: hidden;
     border: 1px solid #e5e7eb;
