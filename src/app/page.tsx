@@ -35,6 +35,7 @@ export default async function HomePage() {
   )
 
   const events = extractEvents(response)
+  const currentYear = new Date().getFullYear()
 
   return (
     <main className={styles.page}>
@@ -147,39 +148,55 @@ export default async function HomePage() {
         )}
       </section>
 
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Por que usar o EventHub?</h2>
+      <section className={`${styles.section} ${styles.featuresSection}`}>
+        <h2 className={`${styles.sectionTitle} ${styles.featuresTitle}`}>
+          Por que usar o EventHub?
+        </h2>
 
         <div className={styles.featuresGrid}>
           <article className={styles.featureCard}>
+            <span className={styles.featureIcon}>🎫</span>
             <h3 className={styles.featureTitle}>Variedade de Eventos</h3>
             <p className={styles.featureText}>
-              Shows, esportes, teatro e muito mais em um só lugar.
+              Shows, esportes, teatro e muito mais em um só lugar
             </p>
           </article>
 
           <article className={styles.featureCard}>
+            <span className={styles.featureIcon}>📍</span>
             <h3 className={styles.featureTitle}>Eventos Locais</h3>
             <p className={styles.featureText}>
-              Descubra o que está acontecendo na sua cidade.
+              Descubra o que está acontecendo na sua cidade
             </p>
           </article>
 
           <article className={styles.featureCard}>
+            <span className={styles.featureIcon}>❤️</span>
             <h3 className={styles.featureTitle}>Salve Favoritos</h3>
             <p className={styles.featureText}>
-              Guarde seus eventos preferidos para não perder.
+              Guarde seus eventos preferidos para não perder
             </p>
           </article>
 
           <article className={styles.featureCard}>
+            <span className={styles.featureIcon}>🔔</span>
             <h3 className={styles.featureTitle}>Fácil de Usar</h3>
             <p className={styles.featureText}>
-              Interface simples e intuitiva para encontrar eventos.
+              Interface simples e intuitiva para encontrar eventos
             </p>
           </article>
         </div>
       </section>
+
+      <footer className={styles.footer}>
+        <p className={styles.footerText}>
+          © {currentYear} EventHub - Todos os direitos reservados
+        </p>
+
+        <p className={styles.footerText}>
+          Dados fornecidos pela Ticketmaster Discovery API
+        </p>
+      </footer>
     </main>
   )
 }
