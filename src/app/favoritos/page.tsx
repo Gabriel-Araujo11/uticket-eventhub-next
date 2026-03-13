@@ -5,6 +5,8 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useFavoritesStore } from '@/store/favorites.store'
 
+import styles from './page.module.css'
+
 function formatEventDate(date?: string): string {
     if (!date) return 'Data não informada'
 
@@ -31,53 +33,36 @@ export default function FavoritesPage() {
 
     if (!isHydrated) {
         return (
-            <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px' }}>
-                <p style={{ color: '#4b5563' }}>Carregando favoritos...</p>
+            <main className={styles.page}>
+                <p className={styles.loadingText}>Carregando favoritos...</p>
             </main>
         )
     }
 
     return (
-        <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '32px 24px 48px' }}>
-            <header style={{ marginBottom: '32px' }}>
-                <Link
-                    href="/"
-                    style={{
-                        display: 'inline-block',
-                        marginBottom: '16px',
-                        color: '#2563eb',
-                        textDecoration: 'none',
-                        fontWeight: 600,
-                    }}
-                >
+        <main className={styles.page}>
+            <header className={styles.header}>
+                <Link href="/" className={styles.backLink}>
                     ← Voltar para a Home
                 </Link>
 
-                <h1 style={{ margin: '0 0 12px' }}>Meus favoritos</h1>
+                <h1 className={styles.title}>Meus favoritos</h1>
 
-                <p style={{ margin: '0 0 8px', color: '#4b5563' }}>
+                <p className={styles.subtitle}>
                     Você salvou {savedEvents.length} de {maxFavorites} eventos.
                 </p>
 
-                <p style={{ margin: 0, color: '#4b5563' }}>
+                <p className={styles.subtitle}>
                     Restam {remainingSlots} espaço(s) disponível(is).
                 </p>
             </header>
 
             {savedEvents.length > 0 && (
-                <div style={{ marginBottom: '24px' }}>
+                <div className={styles.toolbar}>
                     <button
                         type="button"
                         onClick={clearSavedEvents}
-                        style={{
-                            padding: '10px 16px',
-                            border: '1px solid #d1d5db',
-                            borderRadius: '10px',
-                            background: '#ffffff',
-                            color: '#111827',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                        }}
+                        className={styles.clearButton}
                     >
                         Limpar favoritos
                     </button>
@@ -85,83 +70,47 @@ export default function FavoritesPage() {
             )}
 
             {savedEvents.length === 0 ? (
-                <div
-                    style={{
-                        padding: '24px',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '16px',
-                        background: '#ffffff',
-                    }}
-                >
-                    <p style={{ margin: '0 0 16px', color: '#4b5563' }}>
+                <div className={styles.emptyState}>
+                    <p className={styles.emptyText}>
                         Você ainda não salvou nenhum evento.
                     </p>
 
-                    <Link
-                        href="/busca"
-                        style={{
-                            color: '#2563eb',
-                            fontWeight: 600,
-                            textDecoration: 'none',
-                        }}
-                    >
+                    <Link href="/busca" className={styles.emptyLink}>
                         Explorar eventos →
                     </Link>
                 </div>
             ) : (
-                <ul
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-                        gap: '20px',
-                        padding: 0,
-                        margin: 0,
-                        listStyle: 'none',
-                    }}
-                >
+                <ul className={styles.eventsGrid}>
                     {savedEvents.map((event) => {
                         const venue = event._embedded?.venues?.[0]
 
                         return (
-                            <li
-                                key={event.id}
-                                style={{
-                                    padding: '20px',
-                                    border: '1px solid #e5e7eb',
-                                    borderRadius: '16px',
-                                    background: '#ffffff',
-                                    boxShadow: '0 4px 14px rgba(15, 23, 42, 0.06)',
-                                }}
-                            >
-                                <h2 style={{ margin: '0 0 16px', fontSize: '1.125rem' }}>
+                            <li key={event.id} className={styles.eventCard}>
+                                <h2 className={styles.eventTitle}>
                                     <Link
                                         href={`/evento/${event.id}`}
-                                        style={{ color: 'inherit', textDecoration: 'none' }}
+                                        className={styles.eventTitleLink}
                                     >
                                         {event.name}
                                     </Link>
                                 </h2>
 
-                                <p style={{ margin: '0 0 10px', color: '#4b5563' }}>
+                                <p className={styles.eventText}>
                                     <strong>Data:</strong> {formatEventDate(event.dates?.start?.localDate)}
                                 </p>
 
-                                <p style={{ margin: '0 0 10px', color: '#4b5563' }}>
+                                <p className={styles.eventText}>
                                     <strong>Local:</strong> {venue?.name ?? 'Local não informado'}
                                 </p>
 
-                                <p style={{ margin: '0 0 16px', color: '#4b5563' }}>
+                                <p className={styles.eventText}>
                                     <strong>Cidade:</strong> {venue?.city?.name ?? 'Cidade não informada'}
                                 </p>
 
-                                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                                <div className={styles.eventActions}>
                                     <Link
                                         href={`/evento/${event.id}`}
-                                        style={{
-                                            color: '#2563eb',
-                                            fontWeight: 600,
-                                            textDecoration: 'none',
-                                        }}
+                                        className={styles.eventDetailsLink}
                                     >
                                         Ver detalhes →
                                     </Link>
@@ -169,14 +118,7 @@ export default function FavoritesPage() {
                                     <button
                                         type="button"
                                         onClick={() => removeEvent(event.id)}
-                                        style={{
-                                            border: 'none',
-                                            background: 'transparent',
-                                            color: '#dc2626',
-                                            fontWeight: 600,
-                                            cursor: 'pointer',
-                                            padding: 0,
-                                        }}
+                                        className={styles.removeButton}
                                     >
                                         Remover
                                     </button>
