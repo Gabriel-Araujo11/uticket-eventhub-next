@@ -16,7 +16,7 @@ O EventHub Next é uma aplicação de descoberta de eventos com integração à 
 
 **1. Clone o repositório**
 ```bash
-git clone <https://github.com/Gabriel-Araujo11/uticket-eventhub-next.git>
+git clone https://github.com/Gabriel-Araujo11/uticket-eventhub-next.git
 cd eventhub-next
 ```
 
