@@ -199,6 +199,24 @@
     color: #4b5563;
 }
 
+.headerTopBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.favoritesLink {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.favoritesLink:hover {
+    text-decoration: underline;
+}
+
 @media (max-width: 1024px) {
 
     .form,
@@ -231,6 +249,11 @@
     }
 
     .eventActions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .headerTopBar {
         flex-direction: column;
         align-items: flex-start;
     }

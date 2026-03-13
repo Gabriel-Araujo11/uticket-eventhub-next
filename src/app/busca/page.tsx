@@ -78,9 +78,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     return (
         <main className={styles.page}>
             <header className={styles.header}>
-                <Link href="/" className={styles.backLink}>
-                    ← Voltar para a Home
-                </Link>
+                <div className={styles.headerTopBar}>
+                    <Link href="/" className={styles.backLink}>
+                        ← Voltar para a Home
+                    </Link>
+
+                    <Link href="/favoritos" className={styles.favoritesLink}>
+                        Meus favoritos
+                    </Link>
+                </div>
 
                 <h1 className={styles.title}>Buscar eventos</h1>
                 <p className={styles.subtitle}>Encontre eventos por nome ou cidade.</p>
