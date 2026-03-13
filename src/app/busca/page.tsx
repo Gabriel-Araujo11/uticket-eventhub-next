@@ -166,7 +166,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         page,
     })
 
-    let events = []
+    let events: any[] = []
     let currentPage = 0
     let totalPages = 1
     let searchError = false

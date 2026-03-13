@@ -24,7 +24,7 @@ export async function GET(request: Request) {
                 keyword: getParam(searchParams, 'keyword'),
                 size: getNumberParam(searchParams, 'size'),
                 endDateTime: getParam(searchParams, 'endDateTime'),
-                segmentName: getParam(searchParams, 'SsegmentName'),
+                segmentName: getParam(searchParams, 'segmentName'),
                 startDateTime: getParam(searchParams, 'startDateTime'),
             },
             { cache: 'no-store' }
