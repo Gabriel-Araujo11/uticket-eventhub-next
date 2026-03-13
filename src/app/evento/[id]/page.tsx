@@ -10,9 +10,9 @@ import {
     getEventById,
 } from '@/lib/ticketmaster'
 import { mockEventsResponse } from '@/mocks/ticketmaster.mock'
+import { EventDetailsPageProps } from '@/types/event.types'
 
 import styles from './page.module.css'
-import { EventDetailsPageProps } from '@/types/event.types'
 
 function formatEventDate(date?: string): string {
     if (!date) return 'Data não informada'
@@ -74,37 +74,60 @@ export default async function EventDetailsPage({
 
                 <section className={styles.heroCard}>
                     <div className={styles.imageWrapper}>
-                        <Image
-                            src={eventImage?.url ?? '/event-placeholder.svg'}
-                            alt={event.name}
-                            fill
-                            sizes="(max-width: 1024px) 100vw, 960px"
-                            className={styles.image}
-                        />
+                        {eventImage?.url ? (
+                            <Image
+                                src={eventImage.url}
+                                alt={event.name}
+                                fill
+                                sizes="(max-width: 1024px) 100vw, 960px"
+                                className={styles.image}
+                            />
+                        ) : (
+                            <div className={styles.imagePlaceholder}>
+                                <span className={styles.imagePlaceholderText}>EventHub</span>
+                            </div>
+                        )}
                     </div>
 
                     <div className={styles.content}>
                         <header className={styles.header}>
+                            <p className={styles.eyebrow}>Detalhes do evento</p>
                             <h1 className={styles.title}>{event.name}</h1>
-
-                            <p className={styles.metaText}>
-                                <strong>Data:</strong> {formatEventDate(event.dates?.start?.localDate)}
-                            </p>
-
-                            <p className={styles.metaText}>
-                                <strong>Horário:</strong> {event.dates?.start?.localTime ?? 'Não informado'}
-                            </p>
-
-                            <p className={styles.metaText}>
-                                <strong>Local:</strong> {venue?.name ?? 'Local não informado'}
-                            </p>
-
-                            <p className={styles.metaText}>
-                                <strong>Cidade:</strong> {venue?.city?.name ?? 'Cidade não informada'}
-                            </p>
                         </header>
 
+                        <section className={styles.metaGrid}>
+                            <div className={styles.metaItem}>
+                                <span className={styles.metaLabel}>Data</span>
+                                <span className={styles.metaValue}>
+                                    {formatEventDate(event.dates?.start?.localDate)}
+                                </span>
+                            </div>
+
+                            <div className={styles.metaItem}>
+                                <span className={styles.metaLabel}>Horário</span>
+                                <span className={styles.metaValue}>
+                                    {event.dates?.start?.localTime ?? 'Não informado'}
+                                </span>
+                            </div>
+
+                            <div className={styles.metaItem}>
+                                <span className={styles.metaLabel}>Local</span>
+                                <span className={styles.metaValue}>
+                                    {venue?.name ?? 'Local não informado'}
+                                </span>
+                            </div>
+
+                            <div className={styles.metaItem}>
+                                <span className={styles.metaLabel}>Cidade</span>
+                                <span className={styles.metaValue}>
+                                    {venue?.city?.name ?? 'Cidade não informada'}
+                                </span>
+                            </div>
+                        </section>
+
                         <section className={styles.infoCard}>
+                            <h2 className={styles.sectionTitle}>Sobre o evento</h2>
+
                             <p className={styles.description}>
                                 {event.info ?? 'Este evento não possui descrição disponível.'}
                             </p>
@@ -115,9 +138,9 @@ export default async function EventDetailsPage({
                             </p>
                         </section>
 
-                        <div style={{ marginTop: '20px' }}>
+                        <section className={styles.actions}>
                             <FavoriteEventButton event={event} />
-                        </div>
+                        </section>
                     </div>
                 </section>
             </main>

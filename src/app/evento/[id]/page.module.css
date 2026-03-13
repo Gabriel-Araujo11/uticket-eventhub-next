@@ -1,0 +1,165 @@
+.page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 24px 48px;
+    background: #f8fafc;
+    min-height: 100vh;
+}
+
+.backLink {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+
+.heroCard {
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.imageWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #e5e7eb;
+}
+
+.image {
+    object-fit: cover;
+}
+
+.imagePlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #dbeafe 0%, #e5e7eb 100%);
+}
+
+.imagePlaceholderText {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: 0.04em;
+}
+
+.content {
+    padding: 32px;
+}
+
+.header {
+    margin-bottom: 24px;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #2563eb;
+}
+
+.title {
+    margin: 0;
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #111827;
+}
+
+.metaGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.metaItem {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #ffffff;
+}
+
+.metaLabel {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.metaValue {
+    color: #374151;
+    line-height: 1.5;
+}
+
+.infoCard {
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: #f8fafc;
+}
+
+.sectionTitle {
+    margin: 0 0 16px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.description {
+    margin: 0 0 16px;
+    color: #374151;
+    line-height: 1.8;
+}
+
+.notes {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.actions {
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .metaGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .title {
+        font-size: 1.9rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .page {
+        padding: 24px 20px 40px;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 1.7rem;
+    }
+
+    .infoCard {
+        padding: 20px;
+    }
+}
