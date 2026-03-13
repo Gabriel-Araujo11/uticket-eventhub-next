@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -48,6 +49,34 @@ function buildSearchHref(params: {
     search.set('page', String(params.page))
 
     return `/busca?${search.toString()}`
+}
+
+export async function generateMetadata({
+    searchParams,
+}: SearchPageProps): Promise<Metadata> {
+    const keyword = searchParams?.keyword?.trim() || ''
+    const city = searchParams?.city?.trim() || ''
+
+    const filters = [keyword, city].filter(Boolean)
+    const filterLabel = filters.join(' em ')
+
+    if (filterLabel) {
+        return {
+            title: `Busca: ${filterLabel} | EventHub`,
+            description: `Confira os resultados de busca para ${filterLabel} no EventHub.`,
+            alternates: {
+                canonical: '/busca',
+            },
+        }
+    }
+
+    return {
+        title: 'Buscar eventos | EventHub',
+        description: 'Busque eventos por nome, categoria ou cidade no EventHub.',
+        alternates: {
+            canonical: '/busca',
+        },
+    }
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
