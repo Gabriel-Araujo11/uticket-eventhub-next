@@ -1,0 +1,12 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" rx="24" fill="#E5E7EB"></rect>
+  <rect x="80" y="80" width="1040" height="515" rx="20" fill="#D1D5DB"></rect>
+  <circle cx="370" cy="290" r="60" fill="#9CA3AF"></circle>
+  <rect x="470" y="245" width="270" height="28" rx="14" fill="#9CA3AF"></rect>
+  <rect x="470" y="295" width="180" height="22" rx="11" fill="#9CA3AF"></rect>
+  <rect x="470" y="340" width="320" height="22" rx="11" fill="#9CA3AF"></rect>
+  <rect x="470" y="385" width="220" height="22" rx="11" fill="#9CA3AF"></rect>
+  <text x="600" y="560" text-anchor="middle" fill="#6B7280" font-size="28" font-family="Arial, Helvetica, sans-serif">
+    EventHub
+  </text>
+</svg>
