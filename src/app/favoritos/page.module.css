@@ -86,11 +86,42 @@
 }
 
 .eventCard {
-    padding: 20px;
+    overflow: hidden;
     border: 1px solid #e5e7eb;
     border-radius: 16px;
     background: #ffffff;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.eventImageWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #e5e7eb;
+}
+
+.eventImage {
+    object-fit: cover;
+}
+
+.imagePlaceholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #dbeafe 0%, #e5e7eb 100%);
+}
+
+.imagePlaceholderText {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #6b7280;
+    letter-spacing: 0.04em;
+}
+
+.eventContent {
+    padding: 20px;
 }
 
 .eventTitle {

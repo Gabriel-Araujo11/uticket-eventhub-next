@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -83,45 +84,64 @@ export default function FavoritesPage() {
                 <ul className={styles.eventsGrid}>
                     {savedEvents.map((event) => {
                         const venue = event._embedded?.venues?.[0]
+                        const eventImage = event.images?.[0]
 
                         return (
                             <li key={event.id} className={styles.eventCard}>
-                                <h2 className={styles.eventTitle}>
-                                    <Link
-                                        href={`/evento/${event.id}`}
-                                        className={styles.eventTitleLink}
-                                    >
-                                        {event.name}
-                                    </Link>
-                                </h2>
+                                <div className={styles.eventImageWrapper}>
+                                    {eventImage?.url ? (
+                                        <Image
+                                            src={eventImage.url}
+                                            alt={event.name}
+                                            fill
+                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                            className={styles.eventImage}
+                                        />
+                                    ) : (
+                                        <div className={styles.imagePlaceholder}>
+                                            <span className={styles.imagePlaceholderText}>EventHub</span>
+                                        </div>
+                                    )}
+                                </div>
 
-                                <p className={styles.eventText}>
-                                    <strong>Data:</strong> {formatEventDate(event.dates?.start?.localDate)}
-                                </p>
+                                <div className={styles.eventContent}>
+                                    <h2 className={styles.eventTitle}>
+                                        <Link
+                                            href={`/evento/${event.id}`}
+                                            className={styles.eventTitleLink}
+                                        >
+                                            {event.name}
+                                        </Link>
+                                    </h2>
 
-                                <p className={styles.eventText}>
-                                    <strong>Local:</strong> {venue?.name ?? 'Local não informado'}
-                                </p>
+                                    <p className={styles.eventText}>
+                                        <strong>Data:</strong> {formatEventDate(event.dates?.start?.localDate)}
+                                    </p>
 
-                                <p className={styles.eventText}>
-                                    <strong>Cidade:</strong> {venue?.city?.name ?? 'Cidade não informada'}
-                                </p>
+                                    <p className={styles.eventText}>
+                                        <strong>Local:</strong> {venue?.name ?? 'Local não informado'}
+                                    </p>
 
-                                <div className={styles.eventActions}>
-                                    <Link
-                                        href={`/evento/${event.id}`}
-                                        className={styles.eventDetailsLink}
-                                    >
-                                        Ver detalhes →
-                                    </Link>
+                                    <p className={styles.eventText}>
+                                        <strong>Cidade:</strong> {venue?.city?.name ?? 'Cidade não informada'}
+                                    </p>
 
-                                    <button
-                                        type="button"
-                                        onClick={() => removeEvent(event.id)}
-                                        className={styles.removeButton}
-                                    >
-                                        Remover
-                                    </button>
+                                    <div className={styles.eventActions}>
+                                        <Link
+                                            href={`/evento/${event.id}`}
+                                            className={styles.eventDetailsLink}
+                                        >
+                                            Ver detalhes →
+                                        </Link>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => removeEvent(event.id)}
+                                            className={styles.removeButton}
+                                        >
+                                            Remover
+                                        </button>
+                                    </div>
                                 </div>
                             </li>
                         )
