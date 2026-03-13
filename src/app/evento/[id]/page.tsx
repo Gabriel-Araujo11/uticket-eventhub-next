@@ -14,12 +14,9 @@ import {
 import { mockEventsResponse } from '@/mocks/ticketmaster.mock'
 
 import styles from './page.module.css'
+import { EventDetailsPageProps } from '@/types/event.types'
 
-type EventDetailsPageProps = {
-    params: {
-        id: string
-    }
-}
+
 
 function formatEventDate(date?: string): string {
     if (!date) return 'Data não informada'
@@ -49,7 +46,7 @@ async function getStaticEventIds(): Promise<string[]> {
             return events.map((event) => event.id)
         }
     } catch {
-        // fallback para mocks
+
     }
 
     return mockEventsResponse._embedded?.events?.map((event) => event.id) ?? []

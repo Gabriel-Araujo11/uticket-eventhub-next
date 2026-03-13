@@ -120,3 +120,4 @@ export type FavoriteEventButtonProps = {
     event: TicketmasterEvent
     compact?: boolean
 }
+
