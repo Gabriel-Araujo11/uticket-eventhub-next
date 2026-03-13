@@ -51,6 +51,8 @@ Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 | `npm run build` | Gera a build de produção |
 | `npm run start` | Inicia o servidor em modo produção |
 | `npm run lint` | Executa a verificação de lint |
+| `npm run test:e2e` | Executa os testes E2E com Playwright |
+| `npm run test:e2e:headed` | Executa os testes E2E com interface visual |
 
 ---
 
@@ -64,6 +66,37 @@ Acesse [http://localhost:3000](http://localhost:3000) no navegador.
 | `/favoritos` | Eventos salvos localmente |
 | `/api/events` | Endpoint interno de listagem |
 | `/api/events/[id]` | Endpoint interno de detalhes |
+
+---
+
+## Requisitos implementados
+
+### Obrigatórios
+
+| Item | Status |
+|---|---|
+| Next.js 14 com App Router | ✅ Concluído |
+| TypeScript em toda a aplicação | ✅ Concluído |
+| SSG/ISR na Home | ✅ Concluído |
+| SSR na página de busca | ✅ Concluído |
+| SSG com `generateStaticParams` nos detalhes | ✅ Concluído |
+| Zustand para gerenciamento de estado | ✅ Concluído |
+| `next/image` para otimização de imagens | ✅ Concluído |
+| Metadata API para SEO dinâmico | ✅ Concluído |
+| Dynamic Routes `/evento/[id]` | ✅ Concluído |
+| Route Handlers para integração com a API | ✅ Concluído |
+
+### Diferenciais
+
+| Item | Status |
+|---|---|
+| Loading states com `loading.tsx` | ✅ Concluído |
+| Error boundaries com `error.tsx` | ✅ Concluído |
+| Testes E2E com Playwright | ✅ Concluído |
+| Pipeline CI/CD com GitHub Actions | ✅ Concluído |
+| Deploy funcional na Vercel | ✅ Concluído |
+| Documentação das decisões técnicas | ✅ Concluído |
+| Middleware para proteção de rotas | — Não implementado |
 
 ---
 
@@ -102,6 +135,12 @@ Usado em todos os componentes de imagem com fallback visual para eventos sem fot
 **`generateMetadata` para SEO dinâmico**
 Metadados como título, descrição e Open Graph são gerados dinamicamente nas páginas de busca e detalhes, com fallback em caso de falha na API.
 
+**Testes E2E com Playwright**
+Cobertura dos fluxos principais da aplicação: navegação da home para a busca e interação com os filtros avançados. Os resultados dos testes são isolados em `tests/test-results` e ignorados pelo Git.
+
+**Pipeline CI/CD com GitHub Actions**
+Configurado para executar lint, build e testes a cada push, garantindo que o repositório principal nunca receba código quebrado.
+
 ---
 
 ### Correções realizadas em relação ao legado
@@ -125,4 +164,4 @@ Eventos sem imagem ou com campos ausentes recebem fallback visual e textual para
 
 ## Deploy
 
-🔗 Link do deploy: 
+🔗 [https://uticket-eventhub-next-dhhl.vercel.app](https://uticket-eventhub-next-dhhl.vercel.app)
