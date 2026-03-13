@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import FavoriteEventButton from '@/components/favorite-event-button'
+import SearchFiltersForm from '@/components/search-filters-form'
 import {
     extractEventImage,
     extractEvents,
@@ -129,58 +130,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 <p className={styles.subtitle}>Encontre eventos por nome, cidade ou categoria.</p>
             </header>
 
-            <form action="/busca" method="GET" className={styles.form}>
-                <div className={styles.fieldGroup}>
-                    <label htmlFor="keyword" className={styles.label}>
-                        Palavra-chave
-                    </label>
-                    <input
-                        id="keyword"
-                        name="keyword"
-                        defaultValue={keyword}
-                        placeholder="Ex: rock, festival, teatro"
-                        className={styles.input}
-                    />
-                </div>
-
-                <div className={styles.fieldGroup}>
-                    <label htmlFor="city" className={styles.label}>
-                        Cidade
-                    </label>
-                    <input
-                        id="city"
-                        name="city"
-                        defaultValue={city}
-                        placeholder="Ex: Vitória"
-                        className={styles.input}
-                    />
-                </div>
-
-                <div className={styles.fieldGroup}>
-                    <label htmlFor="segmentName" className={styles.label}>
-                        Categoria
-                    </label>
-                    <select
-                        id="segmentName"
-                        name="segmentName"
-                        defaultValue={segmentName}
-                        className={styles.input}
-                    >
-                        <option value="">Todas</option>
-                        <option value="Music">Música</option>
-                        <option value="Sports">Esportes</option>
-                        <option value="Arts & Theatre">Artes e teatro</option>
-                        <option value="Film">Cinema</option>
-                        <option value="Miscellaneous">Outros</option>
-                    </select>
-                </div>
-
-                <div className={styles.buttonWrapper}>
-                    <button type="submit" className={styles.submitButton}>
-                        Buscar
-                    </button>
-                </div>
-            </form>
+            <SearchFiltersForm
+                keyword={keyword}
+                city={city}
+                segmentName={segmentName}
+            />
 
             {events.length === 0 ? (
                 <p className={styles.emptyState}>

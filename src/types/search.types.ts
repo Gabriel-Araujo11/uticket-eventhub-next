@@ -6,3 +6,9 @@ export type SearchPageProps = {
         page?: string
     }
 }
+
+export type SearchFiltersFormProps = {
+    keyword: string
+    city: string
+    segmentName: string
+}
