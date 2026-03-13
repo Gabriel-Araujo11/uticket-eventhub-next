@@ -5,8 +5,10 @@ import { notFound } from 'next/navigation'
 
 import {
     extractEventImage,
+    extractEvents,
     extractFirstVenue,
     getEventById,
+    getEvents,
 } from '@/lib/ticketmaster'
 import { mockEventsResponse } from '@/mocks/ticketmaster.mock'
 
@@ -26,11 +28,37 @@ function formatEventDate(date?: string): string {
     }).format(new Date(`${date}T00:00:00`))
 }
 
-export async function generateStaticParams() {
-    const events = mockEventsResponse._embedded?.events ?? []
+async function getStaticEventIds(): Promise<string[]> {
+    try {
+        const response = await getEvents(
+            {
+                size: 12,
+                sort: 'date,asc',
+            },
+            {
+                next: {
+                    revalidate: 3600,
+                },
+            }
+        )
 
-    return events.map((event) => ({
-        id: event.id,
+        const events = extractEvents(response)
+
+        if (events.length > 0) {
+            return events.map((event) => event.id)
+        }
+    } catch {
+        // fallback para mocks
+    }
+
+    return mockEventsResponse._embedded?.events?.map((event) => event.id) ?? []
+}
+
+export async function generateStaticParams() {
+    const eventIds = await getStaticEventIds()
+
+    return eventIds.map((id) => ({
+        id,
     }))
 }
 
