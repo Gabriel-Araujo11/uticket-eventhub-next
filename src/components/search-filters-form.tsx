@@ -72,6 +72,7 @@ export default function SearchFiltersForm({
     const [isExpanded, setIsExpanded] = useState(
         Boolean(city || segmentName || startDate || endDate)
     )
+    const [isSearchInputFocused, setIsSearchInputFocused] = useState(false)
 
     useEffect(() => {
         setKeywordValue(keyword)
@@ -123,6 +124,7 @@ export default function SearchFiltersForm({
         setStartDateValue('')
         setEndDateValue('')
         setIsExpanded(false)
+        setIsSearchInputFocused(false)
         router.push('/busca')
         router.refresh()
     }
@@ -140,6 +142,8 @@ export default function SearchFiltersForm({
                         name="keyword"
                         value={keywordValue}
                         onChange={(event) => setKeywordValue(event.target.value)}
+                        onFocus={() => setIsSearchInputFocused(true)}
+                        onBlur={() => setIsSearchInputFocused(false)}
                         placeholder="Buscar eventos por nome, artista, local..."
                         className={`${styles.input} ${styles.searchInput}`}
                     />
@@ -166,9 +170,11 @@ export default function SearchFiltersForm({
                 </div>
             </div>
 
-            <p className={styles.helperText}>
-                Use termos completos para melhorar os resultados da busca.
-            </p>
+            {isSearchInputFocused && (
+                <p className={styles.helperText}>
+                    Use termos completos para melhorar os resultados da busca.
+                </p>
+            )}
 
             {isExpanded && (
                 <div className={styles.filtersPanel}>
