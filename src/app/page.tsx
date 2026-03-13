@@ -40,14 +40,26 @@ export default async function HomePage() {
     <main className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroContent}>
+          <div className={styles.heroTopBar}>
+            <Link href="/favoritos" className={styles.favoritesLink}>
+              Meus favoritos
+            </Link>
+          </div>
+
           <h1 className={styles.heroTitle}>Descubra eventos incríveis perto de você</h1>
           <p className={styles.heroSubtitle}>
             Encontre shows, festivais, esportes e muito mais
           </p>
 
-          <Link href="/busca" className={styles.primaryButton}>
-            Explorar Eventos
-          </Link>
+          <div className={styles.heroActions}>
+            <Link href="/busca" className={styles.primaryButton}>
+              Explorar Eventos
+            </Link>
+
+            <Link href="/favoritos" className={styles.secondaryButton}>
+              Ver Favoritos
+            </Link>
+          </div>
         </div>
       </section>
 
