@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import FavoriteEventButton from '@/components/favorite-event-button'
 import SearchFiltersForm from '@/components/search-filters-form'
@@ -32,11 +32,23 @@ function getPageNumber(page?: string): number {
     return parsedPage
 }
 
+function toStartDateTime(date?: string): string | undefined {
+    if (!date) return undefined
+    return `${date}T00:00:00Z`
+}
+
+function toEndDateTime(date?: string): string | undefined {
+    if (!date) return undefined
+    return `${date}T23:59:59Z`
+}
+
 function buildSearchHref(params: {
     keyword?: string
     city?: string
     segmentName?: string
-    page: number
+    startDate?: string
+    endDate?: string
+    page?: number
 }): string {
     const search = new URLSearchParams()
 
@@ -52,17 +64,61 @@ function buildSearchHref(params: {
         search.set('segmentName', params.segmentName)
     }
 
-    search.set('page', String(params.page))
+    if (params.startDate) {
+        search.set('startDate', params.startDate)
+    }
 
-    return `/busca?${search.toString()}`
+    if (params.endDate) {
+        search.set('endDate', params.endDate)
+    }
+
+    if (typeof params.page === 'number') {
+        search.set('page', String(params.page))
+    }
+
+    const queryString = search.toString()
+
+    return queryString ? `/busca?${queryString}` : '/busca'
+}
+
+function getEmptyStateTitle(params: {
+    hasDateFilter: boolean
+    hasAnyFilters: boolean
+}) {
+    if (params.hasDateFilter) {
+        return 'Nenhum evento encontrado nesse período'
+    }
+
+    if (params.hasAnyFilters) {
+        return 'Nenhum evento encontrado para os filtros informados'
+    }
+
+    return 'Nenhum evento encontrado no momento'
+}
+
+function getEmptyStateDescription(params: {
+    hasDateFilter: boolean
+    hasAnyFilters: boolean
+}) {
+    if (params.hasDateFilter) {
+        return 'Tente ampliar o período selecionado ou remover alguns filtros para visualizar mais resultados.'
+    }
+
+    if (params.hasAnyFilters) {
+        return 'Tente ajustar a cidade, a categoria ou a palavra-chave para encontrar mais eventos.'
+    }
+
+    return 'Tente novamente em alguns instantes para ver novos eventos disponíveis.'
 }
 
 export async function generateMetadata({
     searchParams,
 }: SearchPageProps): Promise<Metadata> {
-    const keyword = searchParams?.keyword?.trim() || ''
-    const city = searchParams?.city?.trim() || ''
-    const segmentName = searchParams?.segmentName?.trim() || ''
+    const query = searchParams as Partial<Record<string, string | undefined>> | undefined
+
+    const keyword = query?.keyword?.trim() || ''
+    const city = query?.city?.trim() || ''
+    const segmentName = query?.segmentName?.trim() || ''
 
     const filters = [keyword, city, segmentName].filter(Boolean)
     const filterLabel = filters.join(' • ')
@@ -87,28 +143,57 @@ export async function generateMetadata({
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-    const keyword = searchParams?.keyword?.trim() || ''
-    const city = searchParams?.city?.trim() || ''
-    const segmentName = searchParams?.segmentName?.trim() || ''
-    const page = getPageNumber(searchParams?.page)
+    const query = searchParams as Partial<Record<string, string | undefined>> | undefined
 
-    const response = await getEvents(
-        {
-            keyword: keyword || undefined,
-            city: city || undefined,
-            segmentName: segmentName || undefined,
-            page,
-            size: 12,
-            sort: 'date,asc',
-        },
-        {
-            cache: 'no-store',
-        }
+    const keyword = query?.keyword?.trim() || ''
+    const city = query?.city?.trim() || ''
+    const segmentName = query?.segmentName?.trim() || ''
+    const startDate = query?.startDate?.trim() || ''
+    const endDate = query?.endDate?.trim() || ''
+    const page = getPageNumber(query?.page)
+
+    const hasDateFilter = Boolean(startDate || endDate)
+    const hasAnyFilters = Boolean(
+        keyword || city || segmentName || startDate || endDate
     )
 
-    const events = extractEvents(response)
-    const currentPage = response.page?.number ?? 0
-    const totalPages = response.page?.totalPages ?? 1
+    const retryHref = buildSearchHref({
+        keyword: keyword || undefined,
+        city: city || undefined,
+        segmentName: segmentName || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        page,
+    })
+
+    let events = []
+    let currentPage = 0
+    let totalPages = 1
+    let searchError = false
+
+    try {
+        const response = await getEvents(
+            {
+                keyword: keyword || undefined,
+                city: city || undefined,
+                segmentName: segmentName || undefined,
+                startDateTime: toStartDateTime(startDate),
+                endDateTime: toEndDateTime(endDate),
+                page,
+                size: 12,
+                sort: 'date,asc',
+            },
+            {
+                cache: 'no-store',
+            }
+        )
+
+        events = extractEvents(response)
+        currentPage = response.page?.number ?? 0
+        totalPages = response.page?.totalPages ?? 1
+    } catch {
+        searchError = true
+    }
 
     const hasPreviousPage = currentPage > 0
     const hasNextPage = currentPage + 1 < totalPages
@@ -126,20 +211,41 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     </Link>
                 </div>
 
-                <h1 className={styles.title}>Buscar eventos</h1>
-                <p className={styles.subtitle}>Encontre eventos por nome, cidade ou categoria.</p>
+                <h1 className={styles.title}>Buscar Eventos</h1>
             </header>
 
             <SearchFiltersForm
                 keyword={keyword}
                 city={city}
                 segmentName={segmentName}
+                startDate={startDate}
+                endDate={endDate}
             />
 
-            {events.length === 0 ? (
-                <p className={styles.emptyState}>
-                    Nenhum evento encontrado para os filtros informados.
-                </p>
+            {searchError ? (
+                <div className={styles.feedbackCard}>
+                    <h2 className={styles.feedbackTitle}>
+                        Não foi possível carregar os eventos
+                    </h2>
+
+                    <p className={styles.feedbackText}>
+                        Ocorreu um problema ao consultar a Ticketmaster. Tente novamente em alguns instantes ou revise os filtros informados.
+                    </p>
+
+                    <Link href={retryHref} className={styles.retryLink}>
+                        Tentar novamente
+                    </Link>
+                </div>
+            ) : events.length === 0 ? (
+                <div className={styles.feedbackCard}>
+                    <h2 className={styles.feedbackTitle}>
+                        {getEmptyStateTitle({ hasDateFilter, hasAnyFilters })}
+                    </h2>
+
+                    <p className={styles.feedbackText}>
+                        {getEmptyStateDescription({ hasDateFilter, hasAnyFilters })}
+                    </p>
+                </div>
             ) : (
                 <>
                     <ul className={styles.eventsGrid}>
@@ -198,6 +304,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                                     keyword: keyword || undefined,
                                     city: city || undefined,
                                     segmentName: segmentName || undefined,
+                                    startDate: startDate || undefined,
+                                    endDate: endDate || undefined,
                                     page: currentPage - 1,
                                 })}
                                 className={styles.paginationLink}
@@ -218,6 +326,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                                     keyword: keyword || undefined,
                                     city: city || undefined,
                                     segmentName: segmentName || undefined,
+                                    startDate: startDate || undefined,
+                                    endDate: endDate || undefined,
                                     page: currentPage + 1,
                                 })}
                                 className={styles.paginationLink}
