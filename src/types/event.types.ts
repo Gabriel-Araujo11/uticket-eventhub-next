@@ -109,3 +109,9 @@ export interface TicketmasterEventsResponse {
     }
     page?: TicketmasterPageInfo
 }
+
+export type EventDetailsPageProps = {
+    params: {
+        id: string
+    }
+}
