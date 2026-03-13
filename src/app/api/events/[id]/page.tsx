@@ -1,9 +1,16 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { extractFirstVenue, getEventById } from '@/lib/ticketmaster'
+import {
+    extractEventImage,
+    extractFirstVenue,
+    getEventById,
+} from '@/lib/ticketmaster'
 import { mockEventsResponse } from '@/mocks/ticketmaster.mock'
+
+import styles from './page.module.css'
 
 type EventDetailsPageProps = {
     params: {
@@ -59,54 +66,57 @@ export default async function EventDetailsPage({ params }: EventDetailsPageProps
     try {
         const event = await getEventById(params.id)
         const venue = extractFirstVenue(event)
+        const eventImage = extractEventImage(event)
 
         return (
-            <main style={{ padding: '32px', maxWidth: '960px', margin: '0 auto' }}>
-                <Link
-                    href="/"
-                    style={{
-                        display: 'inline-block',
-                        marginBottom: '24px',
-                        color: '#2563eb',
-                        textDecoration: 'none',
-                        fontWeight: 600,
-                    }}
-                >
+            <main className={styles.page}>
+                <Link href="/" className={styles.backLink}>
                     ← Voltar para a Home
                 </Link>
 
-                <header style={{ marginBottom: '32px' }}>
-                    <h1 style={{ marginBottom: '12px' }}>{event.name}</h1>
+                <section className={styles.heroCard}>
+                    <div className={styles.imageWrapper}>
+                        <Image
+                            src={eventImage?.url ?? '/event-placeholder.svg'}
+                            alt={event.name}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 960px"
+                            className={styles.image}
+                        />
+                    </div>
 
-                    <p style={{ margin: '0 0 8px', color: '#4b5563' }}>
-                        <strong>Data:</strong> {formatEventDate(event.dates?.start?.localDate)}
-                    </p>
+                    <div className={styles.content}>
+                        <header className={styles.header}>
+                            <h1 className={styles.title}>{event.name}</h1>
 
-                    <p style={{ margin: '0 0 8px', color: '#4b5563' }}>
-                        <strong>Horário:</strong> {event.dates?.start?.localTime ?? 'Não informado'}
-                    </p>
+                            <p className={styles.metaText}>
+                                <strong>Data:</strong> {formatEventDate(event.dates?.start?.localDate)}
+                            </p>
 
-                    <p style={{ margin: 0, color: '#4b5563' }}>
-                        <strong>Local:</strong> {venue?.name ?? 'Local não informado'}
-                    </p>
-                </header>
+                            <p className={styles.metaText}>
+                                <strong>Horário:</strong> {event.dates?.start?.localTime ?? 'Não informado'}
+                            </p>
 
-                <section
-                    style={{
-                        padding: '24px',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '16px',
-                        background: '#ffffff',
-                    }}
-                >
-                    <p style={{ marginTop: 0, color: '#374151', lineHeight: 1.7 }}>
-                        {event.info ?? 'Este evento não possui descrição disponível.'}
-                    </p>
+                            <p className={styles.metaText}>
+                                <strong>Local:</strong> {venue?.name ?? 'Local não informado'}
+                            </p>
 
-                    <p style={{ marginBottom: 0, color: '#6b7280', lineHeight: 1.7 }}>
-                        <strong>Observações:</strong>{' '}
-                        {event.pleaseNote ?? 'Nenhuma observação adicional informada.'}
-                    </p>
+                            <p className={styles.metaText}>
+                                <strong>Cidade:</strong> {venue?.city?.name ?? 'Cidade não informada'}
+                            </p>
+                        </header>
+
+                        <section className={styles.infoCard}>
+                            <p className={styles.description}>
+                                {event.info ?? 'Este evento não possui descrição disponível.'}
+                            </p>
+
+                            <p className={styles.notes}>
+                                <strong>Observações:</strong>{' '}
+                                {event.pleaseNote ?? 'Nenhuma observação adicional informada.'}
+                            </p>
+                        </section>
+                    </div>
                 </section>
             </main>
         )
