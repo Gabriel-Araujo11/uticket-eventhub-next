@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import type { TicketmasterEvent } from '@/types/event.types'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -166,7 +167,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         page,
     })
 
-    let events: any[] = []
+    let events: TicketmasterEvent[] = []
     let currentPage = 0
     let totalPages = 1
     let searchError = false
