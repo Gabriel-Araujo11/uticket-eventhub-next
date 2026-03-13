@@ -1,99 +1,116 @@
 .page {
     min-height: 100vh;
-    background: #f8fafc;
+    background: #f3f4f6;
     color: #111827;
 }
 
+.topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.topbarContent {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.brandIcon {
+    font-size: 1.5rem;
+}
+
+.brandText {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #5b5ce7;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+}
+
+.navLink {
+    color: #6b7280;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.navLink:hover {
+    color: #5b5ce7;
+}
+
+.navLinkActive {
+    color: #5b5ce7;
+}
+
 .hero {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    background: linear-gradient(90deg, #6a6cf0 0%, #4f46e5 100%);
     color: #ffffff;
-    padding: 80px 24px;
+    padding: 62px 28px 76px;
 }
 
 .heroContent {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     text-align: center;
 }
 
-.heroTopBar {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 24px;
-}
-
-.favoritesLink {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: 600;
-    opacity: 0.95;
-}
-
-.favoritesLink:hover {
-    text-decoration: underline;
-}
-
 .heroTitle {
-    margin: 0 0 16px;
-    font-size: 2.75rem;
-    font-weight: 700;
-    line-height: 1.1;
+    max-width: 760px;
+    margin: 0 auto 18px;
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.045em;
+    color: #ffffff;
+    font-family: Inter, 'Segoe UI', Arial, sans-serif;
 }
 
 .heroSubtitle {
     margin: 0 0 32px;
-    font-size: 1.125rem;
-    opacity: 0.95;
-}
-
-.heroActions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
+    font-size: 1.12rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
 }
 
 .primaryButton {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-width: 190px;
     padding: 14px 24px;
-    border-radius: 10px;
+    border-radius: 12px;
     background: #ffffff;
-    color: #1d4ed8;
-    font-weight: 600;
+    color: #5b5ce7;
+    font-weight: 700;
     text-decoration: none;
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .primaryButton:hover {
     transform: translateY(-1px);
-    opacity: 0.95;
-}
-
-.secondaryButton {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 14px 24px;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 10px;
-    background: transparent;
-    color: #ffffff;
-    font-weight: 600;
-    text-decoration: none;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.secondaryButton:hover {
-    transform: translateY(-1px);
-    opacity: 0.95;
+    opacity: 0.96;
 }
 
 .section {
-    max-width: 1200px;
+    max-width: 1480px;
     margin: 0 auto;
-    padding: 48px 24px;
+    padding: 48px 28px;
 }
 
 .sectionHeader {
@@ -106,14 +123,16 @@
 
 .sectionTitle {
     margin: 0;
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
     color: #111827;
 }
 
 .secondaryLink {
-    color: #2563eb;
-    font-weight: 600;
+    color: #5b5ce7;
+    font-weight: 700;
     text-decoration: none;
 }
 
@@ -125,7 +144,7 @@
     margin: 0;
     padding: 24px;
     border: 1px solid #e5e7eb;
-    border-radius: 12px;
+    border-radius: 16px;
     background: #ffffff;
     color: #4b5563;
 }
@@ -142,7 +161,7 @@
 .eventCard {
     overflow: hidden;
     border: 1px solid #e5e7eb;
-    border-radius: 16px;
+    border-radius: 18px;
     background: #ffffff;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
 }
@@ -175,7 +194,7 @@
 }
 
 .eventTitleLink:hover {
-    color: #2563eb;
+    color: #5b5ce7;
 }
 
 .eventText {
@@ -194,8 +213,8 @@
 
 .eventDetailsLink {
     display: inline-flex;
-    color: #2563eb;
-    font-weight: 600;
+    color: #5b5ce7;
+    font-weight: 700;
     text-decoration: none;
 }
 
@@ -213,7 +232,7 @@
 .featureCard {
     padding: 24px;
     border: 1px solid #e5e7eb;
-    border-radius: 16px;
+    border-radius: 18px;
     background: #ffffff;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
 }
@@ -232,6 +251,34 @@
 }
 
 @media (max-width: 1024px) {
+    .topbarContent {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 24px;
+    }
+
+    .nav {
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .hero {
+        padding: 56px 24px 64px;
+    }
+
+    .heroTitle {
+        font-size: 3.15rem;
+        max-width: 680px;
+    }
+
+    .section {
+        padding: 44px 24px;
+    }
+
+    .sectionTitle {
+        font-size: 2.4rem;
+    }
+
     .eventsGrid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -242,12 +289,28 @@
 }
 
 @media (max-width: 640px) {
+    .topbarContent {
+        padding: 16px 20px;
+    }
+
+    .brandText {
+        font-size: 1.6rem;
+    }
+
+    .nav {
+        width: 100%;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
     .hero {
-        padding: 64px 20px;
+        padding: 44px 20px 56px;
     }
 
     .heroTitle {
-        font-size: 2rem;
+        font-size: 2.45rem;
+        max-width: 100%;
+        line-height: 1.08;
     }
 
     .heroSubtitle {
@@ -255,12 +318,16 @@
     }
 
     .section {
-        padding: 32px 20px;
+        padding: 36px 20px;
     }
 
     .sectionHeader {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .sectionTitle {
+        font-size: 2rem;
     }
 
     .eventsGrid,
@@ -271,9 +338,5 @@
     .eventActions {
         flex-direction: column;
         align-items: flex-start;
-    }
-
-    .heroTopBar {
-        justify-content: center;
     }
 }

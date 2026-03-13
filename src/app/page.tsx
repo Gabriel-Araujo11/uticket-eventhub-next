@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import FavoriteEventButton from '@/components/favorite-event-button'
 import {
@@ -38,28 +38,40 @@ export default async function HomePage() {
 
   return (
     <main className={styles.page}>
+      <header className={styles.topbar}>
+        <div className={styles.topbarContent}>
+          <Link href="/" className={styles.brand}>
+            <span className={styles.brandIcon}>🎉</span>
+            <span className={styles.brandText}>EventHub</span>
+          </Link>
+
+          <nav className={styles.nav}>
+            <Link href="/" className={`${styles.navLink} ${styles.navLinkActive}`}>
+              Início
+            </Link>
+
+            <Link href="/busca" className={styles.navLink}>
+              Buscar Eventos
+            </Link>
+
+            <Link href="/favoritos" className={styles.navLink}>
+              Meus Eventos
+            </Link>
+          </nav>
+        </div>
+      </header>
+
       <section className={styles.hero}>
         <div className={styles.heroContent}>
-          <div className={styles.heroTopBar}>
-            <Link href="/favoritos" className={styles.favoritesLink}>
-              Meus favoritos
-            </Link>
-          </div>
-
           <h1 className={styles.heroTitle}>Descubra eventos incríveis perto de você</h1>
+
           <p className={styles.heroSubtitle}>
             Encontre shows, festivais, esportes e muito mais
           </p>
 
-          <div className={styles.heroActions}>
-            <Link href="/busca" className={styles.primaryButton}>
-              Explorar Eventos
-            </Link>
-
-            <Link href="/favoritos" className={styles.secondaryButton}>
-              Ver Favoritos
-            </Link>
-          </div>
+          <Link href="/busca" className={styles.primaryButton}>
+            Explorar Eventos
+          </Link>
         </div>
       </section>
 
