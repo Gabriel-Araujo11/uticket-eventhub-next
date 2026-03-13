@@ -95,11 +95,28 @@ function matchesCity(event: TicketmasterEvent, city?: string): boolean {
     return eventCity?.includes(normalizedCity) ?? false
 }
 
+function matchesSegment(event: TicketmasterEvent, segmentName?: string): boolean {
+    if (!segmentName) return true
+
+    const normalizedSegment = segmentName.trim().toLowerCase()
+    if (!normalizedSegment) return true
+
+    return (
+        event.classifications?.some((classification) =>
+            classification.segment?.name?.toLowerCase().includes(normalizedSegment)
+        ) ?? false
+    )
+}
+
 function getMockEvents(params: GetEventsParams = {}): TicketmasterEventsResponse {
     const allEvents = mockEventsResponse._embedded?.events ?? []
 
     const filteredEvents = allEvents.filter((event) => {
-        return matchesKeyword(event, params.keyword) && matchesCity(event, params.city)
+        return (
+            matchesKeyword(event, params.keyword) &&
+            matchesCity(event, params.city) &&
+            matchesSegment(event, params.segmentName)
+        )
     })
 
     const size = params.size ?? 12

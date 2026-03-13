@@ -34,6 +34,7 @@ function getPageNumber(page?: string): number {
 function buildSearchHref(params: {
     keyword?: string
     city?: string
+    segmentName?: string
     page: number
 }): string {
     const search = new URLSearchParams()
@@ -46,6 +47,10 @@ function buildSearchHref(params: {
         search.set('city', params.city)
     }
 
+    if (params.segmentName) {
+        search.set('segmentName', params.segmentName)
+    }
+
     search.set('page', String(params.page))
 
     return `/busca?${search.toString()}`
@@ -56,9 +61,10 @@ export async function generateMetadata({
 }: SearchPageProps): Promise<Metadata> {
     const keyword = searchParams?.keyword?.trim() || ''
     const city = searchParams?.city?.trim() || ''
+    const segmentName = searchParams?.segmentName?.trim() || ''
 
-    const filters = [keyword, city].filter(Boolean)
-    const filterLabel = filters.join(' em ')
+    const filters = [keyword, city, segmentName].filter(Boolean)
+    const filterLabel = filters.join(' • ')
 
     if (filterLabel) {
         return {
@@ -82,12 +88,14 @@ export async function generateMetadata({
 export default async function SearchPage({ searchParams }: SearchPageProps) {
     const keyword = searchParams?.keyword?.trim() || ''
     const city = searchParams?.city?.trim() || ''
+    const segmentName = searchParams?.segmentName?.trim() || ''
     const page = getPageNumber(searchParams?.page)
 
     const response = await getEvents(
         {
             keyword: keyword || undefined,
             city: city || undefined,
+            segmentName: segmentName || undefined,
             page,
             size: 12,
             sort: 'date,asc',
@@ -118,7 +126,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 </div>
 
                 <h1 className={styles.title}>Buscar eventos</h1>
-                <p className={styles.subtitle}>Encontre eventos por nome ou cidade.</p>
+                <p className={styles.subtitle}>Encontre eventos por nome, cidade ou categoria.</p>
             </header>
 
             <form action="/busca" method="GET" className={styles.form}>
@@ -146,6 +154,25 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         placeholder="Ex: Vitória"
                         className={styles.input}
                     />
+                </div>
+
+                <div className={styles.fieldGroup}>
+                    <label htmlFor="segmentName" className={styles.label}>
+                        Categoria
+                    </label>
+                    <select
+                        id="segmentName"
+                        name="segmentName"
+                        defaultValue={segmentName}
+                        className={styles.input}
+                    >
+                        <option value="">Todas</option>
+                        <option value="Music">Música</option>
+                        <option value="Sports">Esportes</option>
+                        <option value="Arts & Theatre">Artes e teatro</option>
+                        <option value="Film">Cinema</option>
+                        <option value="Miscellaneous">Outros</option>
+                    </select>
                 </div>
 
                 <div className={styles.buttonWrapper}>
@@ -216,6 +243,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                                 href={buildSearchHref({
                                     keyword: keyword || undefined,
                                     city: city || undefined,
+                                    segmentName: segmentName || undefined,
                                     page: currentPage - 1,
                                 })}
                                 className={styles.paginationLink}
@@ -235,6 +263,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                                 href={buildSearchHref({
                                     keyword: keyword || undefined,
                                     city: city || undefined,
+                                    segmentName: segmentName || undefined,
                                     page: currentPage + 1,
                                 })}
                                 className={styles.paginationLink}
